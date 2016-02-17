@@ -142,19 +142,6 @@ public class FragmentListView extends Fragment {
         viewModel = new ListViewModel(items, selector);
 
 
-//        ItemPeo1Binding binding=   ItemPeo1Binding.inflate(getLayoutInflater(savedInstanceState));
-//
-//        binding.executePendingBindings();
-//        binding.tab.setupWithViewPager(binding.pager);
-//
-//
-//       KLog.d("count:"+binding.pager.getAdapter().getCount());
-
-//        rx.Observable<User> call = HttpApiManager.getInstance().getService(UserHttpService.class).getUser("then");
-//        call.subscribeOn(Schedulers.newThread())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(user -> test(user)
-//                );
 
         rx.Observable<Student> callLogin = HttpApiManager.getInstance().getService(HttpService.class).getTest();
         callLogin.subscribeOn(Schedulers.newThread())

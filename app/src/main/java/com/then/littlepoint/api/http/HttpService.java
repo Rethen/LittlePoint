@@ -24,12 +24,18 @@ import rx.Observable;
 /**
  * Created by 42524 on 2015/12/11.
  */
-public interface UserHttpService {
+public interface HttpService {
 
-    @GET("/users/{username}")
+
+
+    public  static  final  String GET_USER="/users/{username}";
+
+    public  static  final  String LOGIN="/login";
+
+    @GET(GET_USER)
     Observable<User> getUser(@Path("username") String username);
 
-    @GET("/login")
+    @GET(LOGIN)
     Observable<Student> getTest();
 
 
