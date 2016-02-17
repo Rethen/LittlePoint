@@ -24,7 +24,7 @@ import rx.Observable;
 /**
  * Created by 42524 on 2015/12/11.
  */
-public interface UserHttpService {
+public interface HttpService {
 
     @GET("/users/{username}")
     Observable<User> getUser(@Path("username") String username);
