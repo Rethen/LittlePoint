@@ -1,4 +1,4 @@
-package com.then.littlepoint.listener.impl;
+package com.then.littlepoint.listener;
 
 import android.view.View;
 
