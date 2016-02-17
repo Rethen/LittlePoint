@@ -32,18 +32,22 @@ public interface HttpService {
 
     public  static  final  String LOGIN="/login";
 
+    public  static  final  String UPLOAD="/upload";
+
+    public  static  final  String  GET_APK="/static/apk/{apkname}";
+
     @GET(GET_USER)
     Observable<User> getUser(@Path("username") String username);
 
     @GET(LOGIN)
-    Observable<Student> getTest();
+    Observable<Student> login();
 
 
-    @POST("/upload")
+    @POST(UPLOAD)
     Observable<Void>  upload(@Body RequestBody body);
 
 
-    @GET("/static/apk/{apkname}")
+    @GET(GET_APK)
     @Streaming
     Observable<ResponseBody> getApk(@Path("apkname") String apkName);
 

@@ -82,34 +82,15 @@ public class FragmentListView extends Fragment {
             stuListItems.add(new People("你好" + i, "http://www.baidu.com/img/bd_logo1.png", 1));
         }
 
-//        items2 = new ObservableArrayList<>();
-//        for (int i = 0; i < 15; i++) {
-//            items2.add(new People("你好" + i, "http://www.baidu.com/img/bd_logo1.png", 1));
-//        }
-//
-//        items3 = new ObservableArrayList<>();
-//        for (int i = 0; i < 15; i++) {
-//            items3.add(new People("你好" + i, "http://www.baidu.com/img/bd_logo1.png", 1));
-//        }
-
-//        mItems.add(new ListViewModel(items2, R.layout.item_peo));
-//        mItems.add(new ListViewModel(items3, R.layout.item_peo));
-//
-//        ViewPagerModel viewPagerModel = new ViewPagerModel(mItems, titles, R.layout.viewpager_item);
-//
-//
-//        ListViewModel listViewModel = new ListViewModel(stuListItems, R.layout.item_peo);
 
         for (int i = 0; i < 10000; i++) {
             if (i % 2 == 0)
                 items.add(new People("你好" + i, "http://www.baidu.com/img/bd_logo1.png", 1));
             else if (i % 3 == 0) {
                 Student student = new Student("people2" + i, 0, 3);
-//                student.setViewModel(listViewModel);
                 items.add(student);
             } else {
                 People1 people1 = new People1("你好" + i, "http://www.baidu.com/img/bd_logo1.png", 2);
-//                people1.setViewPagerModel(viewPagerModel);
                 items.add(people1);
             }
         }
