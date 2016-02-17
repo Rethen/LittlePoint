@@ -24,13 +24,17 @@ import rx.Observable;
 /**
  * Created by 42524 on 2015/12/11.
  */
-public interface UserHttpService {
+public interface HttpService {
+
+    public  static  final  String GET_USER="/users/{username}";
+    public  static  final  String LOGIN="/login";
+    public static  final String UPLOAD="/upload";
 
     @GET("/users/{username}")
     Observable<User> getUser(@Path("username") String username);
 
     @GET("/login")
-    Observable<Student> getTest();
+    Observable<Student> login();
 
 
     @POST("/upload")
