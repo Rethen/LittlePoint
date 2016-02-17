@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import com.socks.library.KLog;
 import com.then.littlepoint.BR;
 import com.then.littlepoint.R;
-import com.then.littlepoint.api.http.UserHttpService;
+import com.then.littlepoint.api.http.HttpService;
 import com.then.littlepoint.api.http.ex.ProgressRequestBody;
 import com.then.littlepoint.databinding.ItemPeo1Binding;
 import com.then.littlepoint.databinding.ListViewBinding;
@@ -156,7 +156,7 @@ public class FragmentListView extends Fragment {
 //                .subscribe(user -> test(user)
 //                );
 
-        rx.Observable<Student> callLogin = HttpApiManager.getInstance().getService(UserHttpService.class).getTest();
+        rx.Observable<Student> callLogin = HttpApiManager.getInstance().getService(HttpService.class).getTest();
         callLogin.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Student>() {
@@ -185,7 +185,7 @@ public class FragmentListView extends Fragment {
         RequestBody requestBody1 = new ProgressRequestBody(file1);
 
         RequestBody item = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("mFile", "1.txt", requestBody).build();
-        rx.Observable<Void> call = HttpApiManager.getInstance().getService(UserHttpService.class).upload(item);
+        rx.Observable<Void> call = HttpApiManager.getInstance().getService(HttpService.class).upload(item);
         call.subscribeOn(Schedulers.newThread()).subscribe(new Subscriber<Void>() {
             @Override
             public void onCompleted() {
@@ -205,7 +205,7 @@ public class FragmentListView extends Fragment {
 
 
         RequestBody item1 = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("mFile", "1.txt", requestBody1).build();
-        rx.Observable<Void> call1 = HttpApiManager.getInstance().getService(UserHttpService.class).upload(item1);
+        rx.Observable<Void> call1 = HttpApiManager.getInstance().getService(HttpService.class).upload(item1);
         call1.subscribeOn(Schedulers.newThread()).subscribe(new Subscriber<Void>() {
             @Override
             public void onCompleted() {
@@ -224,7 +224,7 @@ public class FragmentListView extends Fragment {
         });
 
 
-        rx.Observable<ResponseBody> c = HttpApiManager.getInstance().getService(UserHttpService.class).getApk("1.apk");
+        rx.Observable<ResponseBody> c = HttpApiManager.getInstance().getService(HttpService.class).getApk("1.apk");
         c.subscribeOn(Schedulers.newThread()).subscribe(new Subscriber<ResponseBody>() {
             @Override
             public void onCompleted() {
