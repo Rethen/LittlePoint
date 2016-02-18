@@ -70,6 +70,7 @@
                 android:layout_height="50dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                app:isCircle='@{item.type}'
                 app:imageUrl='@{item.url}' />
         </RelativeLayout>
 
