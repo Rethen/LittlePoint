@@ -14,7 +14,7 @@ public class ImageLoadAdapter {
 
     @BindingAdapter({"bind:imageUrl"})
     public static void bindImage(ImageView view, String url) {
-        KLog.d("bind:imageUrl");
+//        KLog.d("bind:imageUrl");
         Glide.with(view.getContext()).load(url).bitmapTransform(new BlurTransformation(view.getContext(),2),new CropCircleTransformation(view.getContext())).into(view);
     }
 }

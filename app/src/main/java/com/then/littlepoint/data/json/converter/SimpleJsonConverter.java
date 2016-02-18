@@ -1,6 +1,7 @@
 package com.then.littlepoint.data.json.converter;
 
 import com.socks.library.KLog;
+import com.then.littlepoint.model.item.data.Student;
 
 import java.io.IOException;
 
@@ -16,6 +17,6 @@ public class SimpleJsonConverter<T> implements Converter<ResponseBody, T> {
     @Override
     public T convert(ResponseBody value) throws IOException {
         KLog.d(value.string());
-        return null;
+       return null;
     }
 }

@@ -1,35 +1,31 @@
 package com.then.littlepoint.fragment;
 
-import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.socks.library.KLog;
 import com.then.littlepoint.BR;
 import com.then.littlepoint.R;
 import com.then.littlepoint.api.http.HttpService;
 import com.then.littlepoint.api.http.ex.ProgressRequestBody;
-import com.then.littlepoint.databinding.ItemPeo1Binding;
 import com.then.littlepoint.databinding.ListViewBinding;
 import com.then.littlepoint.event.UploadAndDownLoadEvent;
 import com.then.littlepoint.manager.HttpApiManager;
+import com.then.littlepoint.model.ItemAction;
 import com.then.littlepoint.model.item.ModelAdapter;
 import com.then.littlepoint.model.item.data.People;
-import com.then.littlepoint.model.item.data.People1;
 import com.then.littlepoint.model.item.data.Student;
 import com.then.littlepoint.model.item.data.User;
 import com.then.littlepoint.model.item.view.ListViewModel;
-import com.then.littlepoint.model.item.view.ViewPagerModel;
 
 
 import java.io.File;
@@ -50,7 +46,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by evan on 5/31/15.
  */
-public class FragmentListView extends Fragment {
+public class FragmentListView extends BaseFragment {
 
     private static final String TAG = "BindingList";
     private ListViewModel viewModel;
@@ -58,13 +54,8 @@ public class FragmentListView extends Fragment {
 
     private String[] titles = new String[]{"1ghghgjhgjhgj","dgfdgdfgdfg"};
 
-
     private ObservableList<Observable> stuListItems;
 
-    ObservableList<Observable> items2;
-    ObservableList<Observable> items3;
-
-    ObservableList<Observable> mItems = new ObservableArrayList<>();
 
     private String urls[] = new String[]{"http://avatar.csdn.net/5/B/B/1_lizzy115.jpg", "http://avatar.csdn.net/E/9/A/1_yetaodiao.jpg", "http://avatar.csdn.net/C/A/6/1_dragon_cheng.jpg", "http://avatar.csdn.net/E/2/F/1_happy09li.jpg"};
 
@@ -79,32 +70,26 @@ public class FragmentListView extends Fragment {
         stuListItems = new ObservableArrayList<>();
 
         for (int i = 0; i < 100; i++) {
-            stuListItems.add(new People("你好" + i, "http://www.baidu.com/img/bd_logo1.png", 1));
+            stuListItems.add(new People("你好" + i, "http://www.baidu.com/img/bd_logo1.png", 1,this));
         }
 
 
         for (int i = 0; i < 10000; i++) {
             if (i % 2 == 0)
-                items.add(new People("你好" + i, "http://www.baidu.com/img/bd_logo1.png", 1));
+                items.add(new People("你好" + i, "http://avatar.csdn.net/5/B/B/1_lizzy115.jpg", 1,this));
             else if (i % 3 == 0) {
-                Student student = new Student("people2" + i, 0, 3);
-                items.add(student);
-            } else {
-                People1 people1 = new People1("你好" + i, "http://www.baidu.com/img/bd_logo1.png", 2);
-                items.add(people1);
+                items.add(new Student("student" + i, 0, 3));
             }
         }
+
         ItemViewSelector selector = new ItemViewSelector<ModelAdapter>() {
             @Override
             public void select(ItemView itemView, int position, ModelAdapter item) {
                 if (item.getViewType() == 1) {
                     itemView.set(BR.item, R.layout.item_peo);
-                } else if (item.getViewType() == 2) {
-                    itemView.set(BR.item, R.layout.item_peo1);
-                } else if (item.getViewType() == 3) {
+                }  else if (item.getViewType() == 3) {
                     itemView.set(BR.item, R.layout.item_stu);
                 }
-
             }
 
             @Override
@@ -114,17 +99,13 @@ public class FragmentListView extends Fragment {
 
             @Override
             public void bind(LayoutInflater inflater, @LayoutRes int layoutId, ViewGroup viewGroup) {
-                if (layoutId == R.layout.item_peo1) {
 
-                }
             }
         };
 
         viewModel = new ListViewModel(items, selector);
 
-
-
-        rx.Observable<Student> callLogin = HttpApiManager.getInstance().getService(HttpService.class).getTest();
+        rx.Observable<Student> callLogin = HttpApiManager.getInstance().getService(HttpService.class).login();
         callLogin.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Student>() {
@@ -137,6 +118,8 @@ public class FragmentListView extends Fragment {
                                public void onError(Throwable e) {
 
                                }
+
+
 
                                @Override
                                public void onNext(Student student) {
@@ -213,11 +196,23 @@ public class FragmentListView extends Fragment {
 
     }
 
-    public void test(User user) {
-//           ((People) items.get(0)).setTitle(user.getUrl());
-//        startActivityForResult();
-    }
 
+    @Override
+    public void actionViewModel(View view, ModelAdapter modelAdapter, int actionType) {
+        super.actionViewModel(view, modelAdapter, actionType);
+        switch (view.getId()){
+            case R.id.title:
+                if(actionType== ItemAction.ONCLICK)
+                ((People) modelAdapter).setTitle("1234454");
+                else if(actionType==ItemAction.LONG_CLICK){
+                    ((People)modelAdapter).setTitle("Longclick");
+                }
+                break;
+            case R.id.image:
+                Toast.makeText(this.getActivity(),"123",Toast.LENGTH_LONG).show();
+                break;
+        }
+    }
 
     public void changetime() {
         new Thread(new Runnable() {
@@ -255,4 +250,6 @@ public class FragmentListView extends Fragment {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
+
+
 }

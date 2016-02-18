@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.then.littlepoint.R;
-import com.then.littlepoint.databinding.ItemPeo1Binding;
 import com.then.littlepoint.databinding.ViewpagerViewBinding;
 import com.then.littlepoint.model.item.data.People;
 import com.then.littlepoint.model.item.data.Student;
@@ -47,7 +46,7 @@ public class FragmentViewPagerView extends Fragment  {
 
         final ObservableList<Observable> items = new ObservableArrayList<>();
         for (int i = 0; i < 3; i++) {
-            items.add(new People("你好", "https://www.baidu.com/img/bdlogo.png"));
+            items.add(new People("你好", "https://www.baidu.com/img/bdlogo.png",1));
         }
 
         items1 = new ObservableArrayList<>();

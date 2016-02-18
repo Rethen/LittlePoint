@@ -13,6 +13,7 @@ import com.then.littlepoint.BR;
 import com.then.littlepoint.R;
 import com.then.littlepoint.activity.TowActivity;
 import com.then.littlepoint.event.AndroidCompontEvent;
+import com.then.littlepoint.listener.ViewListener;
 import com.then.littlepoint.manager.AndroidCompontManager;
 import com.then.littlepoint.model.item.ModelAdapter;
 
@@ -35,12 +36,11 @@ public class People extends ModelAdapter {
     protected String url;
 
     @Bindable
-    protected String title="then";
+    protected String title = "then";
 
     @Bindable
     @Ignore
-    protected String color="#673AB7";
-
+    protected String color = "#673AB7";
 
 
     public String getTitle() {
@@ -52,18 +52,22 @@ public class People extends ModelAdapter {
         return url;
     }
 
-    public People(String title, String url,int viewType) {
+    public People(String title, String url, int viewType) {
         this.title = title;
         this.url = url;
-        this.viewType=viewType;
+        this.viewType = viewType;
     }
-    public People(String title, String url) {
-        this.title = title;
-        this.url = url;
+
+    public People(String title, String url, int viewType,ViewModelListner viewModelListner) {
+        this(title, url, viewType);
+        this.viewModelListner=viewModelListner;
     }
-    public People(){
+
+
+    public People() {
 
     }
+
 
 
 
@@ -77,25 +81,24 @@ public class People extends ModelAdapter {
 
     public void setTitle(String title) {
         this.title = title;
-//        notifyPropertyChanged(BR.title);
+      notifyPropertyChanged(BR.title);
     }
 
 
-
-    @Override
-    public void action(View view) {
-        int viewId=view.getId();
-        switch (viewId){
-            case R.id.title:
-                setTitle("11111");
-                break;
-            case R.id.item_root:
-                Student student=new Student("then",18);
-                Intent intent= AndroidCompontManager.getInstance().newIntent(TowActivity.class);
-                intent.putExtra("stu",student);
-                AndroidCompontEvent compontEvent=new AndroidCompontEvent(AndroidCompontEvent.TYPE_ACTIVITY,intent);
-                EventBus.getDefault().post(compontEvent);
-                break;
-        }
-    }
+//    @Override
+//    public void action(View view) {
+//        int viewId=view.getId();
+//        switch (viewId){
+//            case R.id.title:
+//                setTitle("11111");
+//                break;
+//            case R.id.item_root:
+//                Student student=new Student("then",18);
+//                Intent intent= AndroidCompontManager.getInstance().newIntent(TowActivity.class);
+//                intent.putExtra("stu",student);
+//                AndroidCompontEvent compontEvent=new AndroidCompontEvent(AndroidCompontEvent.TYPE_ACTIVITY,intent);
+//                EventBus.getDefault().post(compontEvent);
+//                break;
+//        }
+//    }
 }

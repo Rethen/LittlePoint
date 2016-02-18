@@ -28,6 +28,7 @@ public interface HttpService {
 
 
 
+
     public  static  final  String GET_USER="/users/{username}";
 
     public  static  final  String LOGIN="/login";
@@ -35,6 +36,9 @@ public interface HttpService {
     public  static  final  String UPLOAD="/upload";
 
     public  static  final  String  GET_APK="/static/apk/{apkname}";
+
+
+
 
     @GET(GET_USER)
     Observable<User> getUser(@Path("username") String username);
@@ -50,6 +54,9 @@ public interface HttpService {
     @GET(GET_APK)
     @Streaming
     Observable<ResponseBody> getApk(@Path("apkname") String apkName);
+
+
+
 
 
 

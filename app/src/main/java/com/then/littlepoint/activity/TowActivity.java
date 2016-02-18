@@ -10,7 +10,6 @@ import com.then.littlepoint.R;
 import com.then.littlepoint.event.DBEvent;
 import com.then.littlepoint.event.result.DBResult;
 import com.then.littlepoint.model.item.data.People;
-import com.then.littlepoint.model.item.data.Student;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,19 +36,10 @@ public class TowActivity extends BaseActivity {
 
 
         DBEvent dbEvent=new DBEvent(People.class);
-        dbEvent.setObject(new People("kk","44"));
+        dbEvent.setObject(new People());
 
         dbEvent.setCode(DBEvent.SAVE);
         EventBus.getDefault().post(dbEvent);
-//        DBEvent dbEvent1=new DBEvent(People.class);
-//        List<People> peoples=new ArrayList<People>();
-//        for (int i=0;i<100000;i++){
-//            peoples.add(new People("kk"+i,"44"));
-//        }
-//        dbEvent1.setObject(peoples);
-//        dbEvent1.setCode(DBEvent.SAVE_LIST);
-
-//        EventBus.getDefault().post(dbEvent1);
     }
 
     @Subscribe(threadMode = ThreadMode.MainThread)
