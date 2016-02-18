@@ -42,6 +42,9 @@ public class People extends ModelAdapter {
     @Ignore
     protected String color = "#673AB7";
 
+    @Bindable
+    private  boolean type;
+
 
     public String getTitle() {
         return title;
@@ -68,8 +71,14 @@ public class People extends ModelAdapter {
 
     }
 
+    public void setType(boolean type) {
+        this.type = type;
+        notifyPropertyChanged(BR.type);
+    }
 
-
+    public boolean isType() {
+        return type;
+    }
 
     public String getColor() {
         return color;

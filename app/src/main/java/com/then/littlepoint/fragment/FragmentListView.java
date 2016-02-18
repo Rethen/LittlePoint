@@ -52,7 +52,7 @@ public class FragmentListView extends BaseFragment {
     private ListViewModel viewModel;
     public ObservableList<Observable> items;
 
-    private String[] titles = new String[]{"1ghghgjhgjhgj","dgfdgdfgdfg"};
+    private String[] titles = new String[]{"1ghghgjhgjhgj", "dgfdgdfgdfg"};
 
     private ObservableList<Observable> stuListItems;
 
@@ -70,13 +70,18 @@ public class FragmentListView extends BaseFragment {
         stuListItems = new ObservableArrayList<>();
 
         for (int i = 0; i < 100; i++) {
-            stuListItems.add(new People("你好" + i, "http://www.baidu.com/img/bd_logo1.png", 1,this));
+            stuListItems.add(new People("你好" + i, "http://www.baidu.com/img/bd_logo1.png", 1, this));
         }
 
-
         for (int i = 0; i < 10000; i++) {
-            if (i % 2 == 0)
-                items.add(new People("你好" + i, "http://avatar.csdn.net/5/B/B/1_lizzy115.jpg", 1,this));
+            if (i % 2 == 0){
+              People p=  new People("你好" + i, "http://avatar.csdn.net/5/B/B/1_lizzy115.jpg", 1, this);
+               if(i==2){
+                   p.setType(true);
+               }
+                items.add(p);
+
+            }
             else if (i % 3 == 0) {
                 items.add(new Student("student" + i, 0, 3));
             }
@@ -87,14 +92,14 @@ public class FragmentListView extends BaseFragment {
             public void select(ItemView itemView, int position, ModelAdapter item) {
                 if (item.getViewType() == 1) {
                     itemView.set(BR.item, R.layout.item_peo);
-                }  else if (item.getViewType() == 3) {
+                } else if (item.getViewType() == 3) {
                     itemView.set(BR.item, R.layout.item_stu);
                 }
             }
 
             @Override
             public int viewTypeCount() {
-                return 3;
+                return 2;
             }
 
             @Override
@@ -104,35 +109,23 @@ public class FragmentListView extends BaseFragment {
         };
 
         viewModel = new ListViewModel(items, selector);
-
         rx.Observable<Student> callLogin = HttpApiManager.getInstance().getService(HttpService.class).login();
         callLogin.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Student>() {
-                               @Override
-                               public void onCompleted() {
+                .subscribe(student -> {
 
-                               }
+                        }, throwable -> {
 
-                               @Override
-                               public void onError(Throwable e) {
+                        }, () -> {
 
-                               }
-
-
-
-                               @Override
-                               public void onNext(Student student) {
-
-                               }
-                           }
+                        }
                 );
 
 
         File file = new File("/sdcard/1.apk");
         File file1 = new File("/sdcard/2.apk");
 
-        RequestBody requestBody = new  ProgressRequestBody(file);
+        RequestBody requestBody = new ProgressRequestBody(file);
         RequestBody requestBody1 = new ProgressRequestBody(file1);
 
         RequestBody item = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("mFile", "1.txt", requestBody).build();
@@ -200,34 +193,37 @@ public class FragmentListView extends BaseFragment {
     @Override
     public void actionViewModel(View view, ModelAdapter modelAdapter, int actionType) {
         super.actionViewModel(view, modelAdapter, actionType);
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.title:
-                if(actionType== ItemAction.ONCLICK)
-                ((People) modelAdapter).setTitle("1234454");
-                else if(actionType==ItemAction.LONG_CLICK){
-                    ((People)modelAdapter).setTitle("Longclick");
+                if (actionType == ItemAction.ONCLICK)
+                    ((People) modelAdapter).setTitle("1234454");
+                else if (actionType == ItemAction.LONG_CLICK) {
+                    ((People) modelAdapter).setTitle("Longclick");
                 }
                 break;
             case R.id.image:
-                Toast.makeText(this.getActivity(),"123",Toast.LENGTH_LONG).show();
+                if(actionType==ItemAction.ONCLICK)
+                Toast.makeText(this.getActivity(), "123", Toast.LENGTH_LONG).show();
+                else if(actionType==ItemAction.LONG_CLICK){
+                    Toast.makeText(this.getActivity(), "LongClick", Toast.LENGTH_LONG).show();
+                }
                 break;
         }
     }
 
     public void changetime() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (Observable p : items) {
-                    ((People) p).setTitle("100");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        new Thread(() -> {
+            for (Observable p : items) {
+                ((People) p).setTitle("100");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-        }).start();
+        }
+        ).start();
+
     }
 
     @Subscribe(threadMode = ThreadMode.MainThread)

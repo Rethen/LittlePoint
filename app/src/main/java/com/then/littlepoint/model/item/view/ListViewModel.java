@@ -36,13 +36,13 @@ public class ListViewModel extends ModelAdapter implements SwipeRefreshLayout.On
 
 
     public ListViewModel(ObservableList<Observable> items, int layoutId) {
-        itemView=ItemViewArg.of(ItemView.of(BR.item, layoutId));
+        itemView = ItemViewArg.of(ItemView.of(BR.item, layoutId));
         this.items = items;
     }
 
 
-    public ListViewModel(ObservableList<Observable> items,ItemViewSelector selector){
-        itemView=ItemViewArg.of(selector);
+    public ListViewModel(ObservableList<Observable> items, ItemViewSelector selector) {
+        itemView = ItemViewArg.of(selector);
         this.items = items;
     }
 
@@ -71,31 +71,24 @@ public class ListViewModel extends ModelAdapter implements SwipeRefreshLayout.On
 
 
 
-    /**
-     * Define stable item ids
-     */
-    public final BindingListViewAdapter.ItemIds<Observable> itemIds = new BindingListViewAdapter.ItemIds<Observable>() {
-        @Override
-        public long getItemId(int position, Observable item) {
-            return position;
-        }
-    };
+
+    public  final  BindingListViewAdapter.ItemIds<Observable> itemIds=(position, item) ->{return  position;};
 
     @Override
     public void onRefresh() {
-        rx.Observable.create(new rx.Observable.OnSubscribe<Observable>() {
-            @Override
-            public void call(Subscriber<? super Observable> subscriber) {
-                for (int i=0;i<5;i++){
-                    subscriber.onNext(new Student("hello"+i,20));
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-                setRefreshing(false);
-            }
-        }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(s ->{items.add(s);});
+        rx.Observable.create(subscriber -> {
+                    try {
+                        for (int i = 0; i < 5; i++) {
+                            Thread.sleep(1000);
+                            subscriber.onNext(new Student("hello" + i, 20));
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    setRefreshing(false);
+                }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(s -> {
+            items.add((Observable) s);
+        });
+
     }
 }

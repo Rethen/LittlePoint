@@ -42,7 +42,7 @@ public class ViewAdapter {
     }
 
     @BindingMethods({
-            @BindingMethod(type = TextView.class, attribute = "android:onLongClick", method = "setOnLongClickListener")})
+            @BindingMethod(type = View.class, attribute = "android:onLongClick", method = "setOnLongClickListener")})
     public static class TextViewAdapter {
 
     }

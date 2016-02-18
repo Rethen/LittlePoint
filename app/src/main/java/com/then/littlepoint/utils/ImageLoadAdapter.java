@@ -15,6 +15,16 @@ public class ImageLoadAdapter {
     @BindingAdapter({"bind:imageUrl"})
     public static void bindImage(ImageView view, String url) {
 //        KLog.d("bind:imageUrl");
-        Glide.with(view.getContext()).load(url).bitmapTransform(new BlurTransformation(view.getContext(),2),new CropCircleTransformation(view.getContext())).into(view);
+        Glide.with(view.getContext()).load(url).bitmapTransform(new BlurTransformation(view.getContext(), 2), new CropCircleTransformation(view.getContext())).into(view);
+    }
+
+    @BindingAdapter({"bind:imageUrl", "bind:isCircle"})
+    public static void bindImage(ImageView view, String url, boolean f) {
+        if (f) {
+            Glide.with(view.getContext()).load(url).bitmapTransform(new BlurTransformation(view.getContext(), 2), new CropCircleTransformation(view.getContext())).into(view);
+        } else {
+            Glide.with(view.getContext()).load(url).bitmapTransform(new BlurTransformation(view.getContext(), 2)).into(view);
+
+        }
     }
 }

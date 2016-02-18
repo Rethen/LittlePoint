@@ -32,11 +32,12 @@ public class FragmentViewPagerView extends Fragment  {
     private ListViewModel viewModel;
     private ViewpagerViewBinding binding;
     ObservableList<Observable> mItems = new ObservableArrayList<>();
-    private String[] titles = new String[]{"1", "235566468", "gfhgfhhgfhgfhgffhg", "ghgdfhtyfhtyhg","lkfjhlkfjdglkjg"};
+    private String[] titles = new String[]{"1", "235566468", "gfhgfhhgfhgfhgffhg", "ghgdfhtyfhtyhg","lkfjhlkfjdglkjg","123"};
     ObservableList<Observable> items1;
     ObservableList<Observable> items2;
     ObservableList<Observable> items3;
     ObservableList<Observable> items4;
+    ObservableList<Observable> itmes5;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,6 +71,12 @@ public class FragmentViewPagerView extends Fragment  {
             items4.add(new Student("zhuanglizhong", 20));
         }
 
+        itmes5=new ObservableArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            itmes5.add(new Student("zhuanglizhong", 20));
+        }
+
         mItems.add(new ListViewModel(items, R.layout.item_peo));
 
         mItems.add(new ListViewModel(items1, R.layout.item_stu));
@@ -79,6 +86,8 @@ public class FragmentViewPagerView extends Fragment  {
         mItems.add(new ListViewModel(items3, R.layout.item_stu));
 
         mItems.add(new ListViewModel(items4, R.layout.item_stu));
+
+        mItems.add(new ListViewModel(itmes5, R.layout.item_stu1));
     }
 
     @Nullable
