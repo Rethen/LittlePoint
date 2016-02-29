@@ -47,7 +47,6 @@ public class SimpleJsonConverterFactory extends  Converter.Factory  {
         return super.requestBodyConverter(type, annotations, retrofit);
     }
 
-
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
         return super.responseBodyConverter(type, annotations, retrofit);

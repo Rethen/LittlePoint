@@ -8,6 +8,8 @@ import com.then.littlepoint.model.item.ModelAdapter;
 
 import me.tatarka.bindingcollectionadapter.BindingViewPagerAdapter;
 import me.tatarka.bindingcollectionadapter.ItemView;
+import me.tatarka.bindingcollectionadapter.ItemViewArg;
+import me.tatarka.bindingcollectionadapter.ItemViewSelector;
 
 /**
  * Created by 42524 on 2015/12/31.
@@ -21,10 +23,10 @@ public class ViewPagerModel extends ModelAdapter {
     private   BindingViewPagerAdapter.PageTitles<Observable> pageTitles;
 
     @Bindable
-    private ItemView itemView;
+    private ItemViewArg itemView;
 
 
-    public ViewPagerModel(ObservableList<Observable> items,String[] titles){
+    public ViewPagerModel(ObservableList<Observable> items,final  String[] titles){
         this.items=items;
 
         pageTitles = new BindingViewPagerAdapter.PageTitles<Observable>() {
@@ -38,7 +40,12 @@ public class ViewPagerModel extends ModelAdapter {
 
     public ViewPagerModel(ObservableList<Observable> items,String[] titles,int layoutId){
         this(items,titles);
-        itemView = ItemView.of(BR.item, layoutId);
+        itemView =ItemViewArg.of(ItemView.of(BR.item, layoutId));
+    }
+
+    public ViewPagerModel(ObservableList<Observable> items,String[] titles, ItemViewSelector selector) {
+        this(items,titles);
+        itemView = ItemViewArg.of(selector);
     }
 
 
@@ -59,11 +66,11 @@ public class ViewPagerModel extends ModelAdapter {
     }
 
 
-    public ItemView getItemView() {
+    public ItemViewArg getItemView() {
         return itemView;
     }
 
-    public void setItemView(ItemView singleItemView) {
+    public void setItemView(ItemViewArg singleItemView) {
         this.itemView = singleItemView;
     }
 

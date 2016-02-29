@@ -11,16 +11,7 @@ import com.then.littlepoint.model.item.ModelAdapter;
 public interface ViewListener extends View.OnClickListener,View.OnLongClickListener{
 
 
-    @Override
-    default void onClick(View v) {
-        action(v,ItemAction.ONCLICK);
-    }
 
-    @Override
-    default boolean onLongClick(View v) {
-        action(v, ItemAction.LONG_CLICK);
-        return true;
-    }
 
     void  action(View view,int actionType);
 }

@@ -2,7 +2,6 @@ package com.then.littlepoint.application;
 
 import android.support.multidex.MultiDexApplication;
 
-import com.then.littlepoint.manager.AndroidCompontManager;
 import com.then.littlepoint.manager.DBManager;
 
 
@@ -15,7 +14,6 @@ public class MyApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        AndroidCompontManager.init(getApplicationContext());
         DBManager.init(getApplicationContext());
     }
 

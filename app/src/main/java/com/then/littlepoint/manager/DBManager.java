@@ -10,9 +10,9 @@ import com.then.littlepoint.event.result.DBResult;
 
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
-import de.greenrobot.event.Subscribe;
-import de.greenrobot.event.ThreadMode;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by 42524 on 2015/12/30.
@@ -40,7 +40,7 @@ public class DBManager {
         EventBus.getDefault().register(this);
     }
 
-    @Subscribe(threadMode = ThreadMode.Async)
+    @Subscribe(threadMode = ThreadMode.ASYNC)
     public void exeutDB(DBEvent dbEvent) {
         DBResult result = new DBResult(dbEvent.getClazz());
         result.setCode(dbEvent.getCode());

@@ -1,5 +1,6 @@
 package com.then.littlepoint.fragment;
 
+import android.content.Intent;
 import android.databinding.Observable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.socks.library.KLog;
 import com.then.littlepoint.BR;
 import com.then.littlepoint.R;
+import com.then.littlepoint.activity.TowActivity;
 import com.then.littlepoint.api.http.HttpService;
 import com.then.littlepoint.api.http.ex.ProgressRequestBody;
 import com.then.littlepoint.databinding.ListViewBinding;
@@ -30,9 +32,9 @@ import com.then.littlepoint.model.item.view.ListViewModel;
 
 import java.io.File;
 
-import de.greenrobot.event.EventBus;
-import de.greenrobot.event.Subscribe;
-import de.greenrobot.event.ThreadMode;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import me.tatarka.bindingcollectionadapter.ItemView;
 import me.tatarka.bindingcollectionadapter.ItemViewSelector;
 import okhttp3.MultipartBody;
@@ -54,7 +56,7 @@ public class FragmentListView extends BaseFragment {
 
     private String[] titles = new String[]{"1ghghgjhgjhgj", "dgfdgdfgdfg"};
 
-    private ObservableList<Observable> stuListItems;
+//    private ObservableList<Observable> stuListItems;
 
 
     private String urls[] = new String[]{"http://avatar.csdn.net/5/B/B/1_lizzy115.jpg", "http://avatar.csdn.net/E/9/A/1_yetaodiao.jpg", "http://avatar.csdn.net/C/A/6/1_dragon_cheng.jpg", "http://avatar.csdn.net/E/2/F/1_happy09li.jpg"};
@@ -67,22 +69,21 @@ public class FragmentListView extends BaseFragment {
         setRetainInstance(true);
         items = new ObservableArrayList<>();
 
-        stuListItems = new ObservableArrayList<>();
-
-        for (int i = 0; i < 100; i++) {
-            stuListItems.add(new People("你好" + i, "http://www.baidu.com/img/bd_logo1.png", 1, this));
-        }
+//        stuListItems = new ObservableArrayList<>();
+//
+//        for (int i = 0; i < 100; i++) {
+//            stuListItems.add(new People("你好" + i, "http://www.baidu.com/img/bd_logo1.png", 1, this));
+//        }
 
         for (int i = 0; i < 10000; i++) {
-            if (i % 2 == 0){
-              People p=  new People("你好" + i, "http://avatar.csdn.net/5/B/B/1_lizzy115.jpg", 1, this);
-               if(i==2){
-                   p.setType(true);
-               }
+            if (i % 2 == 0) {
+                People p = new People("你好" + i, "http://avatar.csdn.net/5/B/B/1_lizzy115.jpg", 1, this);
+                if (i == 2) {
+                    p.setType(true);
+                }
                 items.add(p);
 
-            }
-            else if (i % 3 == 0) {
+            } else if (i % 3 == 0) {
                 items.add(new Student("student" + i, 0, 3));
             }
         }
@@ -112,13 +113,22 @@ public class FragmentListView extends BaseFragment {
         rx.Observable<Student> callLogin = HttpApiManager.getInstance().getService(HttpService.class).login();
         callLogin.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(student -> {
+                .subscribe(new Subscriber<Student>() {
+                               @Override
+                               public void onCompleted() {
 
-                        }, throwable -> {
+                               }
 
-                        }, () -> {
+                               @Override
+                               public void onError(Throwable e) {
 
-                        }
+                               }
+
+                               @Override
+                               public void onNext(Student student) {
+
+                               }
+                           }
                 );
 
 
@@ -195,16 +205,18 @@ public class FragmentListView extends BaseFragment {
         super.actionViewModel(view, modelAdapter, actionType);
         switch (view.getId()) {
             case R.id.title:
-                if (actionType == ItemAction.ONCLICK)
-                    ((People) modelAdapter).setTitle("1234454");
+                if (actionType == ItemAction.ONCLICK) {
+                    Intent intent = new Intent(getActivity(), TowActivity.class);
+                    startActivity(intent);
+                }
                 else if (actionType == ItemAction.LONG_CLICK) {
                     ((People) modelAdapter).setTitle("Longclick");
                 }
                 break;
             case R.id.image:
-                if(actionType==ItemAction.ONCLICK)
-                Toast.makeText(this.getActivity(), "123", Toast.LENGTH_LONG).show();
-                else if(actionType==ItemAction.LONG_CLICK){
+                if (actionType == ItemAction.ONCLICK)
+                    Toast.makeText(this.getActivity(), "123", Toast.LENGTH_LONG).show();
+                else if (actionType == ItemAction.LONG_CLICK) {
                     Toast.makeText(this.getActivity(), "LongClick", Toast.LENGTH_LONG).show();
                 }
                 break;
@@ -212,21 +224,21 @@ public class FragmentListView extends BaseFragment {
     }
 
     public void changetime() {
-        new Thread(() -> {
-            for (Observable p : items) {
-                ((People) p).setTitle("100");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        ).start();
+//        new Thread(() -> {
+//            for (Observable p : items) {
+//                ((People) p).setTitle("100");
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        ).start();
 
     }
 
-    @Subscribe(threadMode = ThreadMode.MainThread)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void fileProgress(UploadAndDownLoadEvent event) {
         KLog.d("event:" + event.getLoaded());
     }

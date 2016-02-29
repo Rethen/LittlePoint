@@ -38,8 +38,6 @@ public interface HttpService {
     public  static  final  String  GET_APK="/static/apk/{apkname}";
 
 
-
-
     @GET(GET_USER)
     Observable<User> getUser(@Path("username") String username);
 

@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import de.greenrobot.event.EventBus;
-import de.greenrobot.event.Subscribe;
-import de.greenrobot.event.ThreadMode;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by 42524 on 2015/12/28.
@@ -42,7 +42,7 @@ public class TowActivity extends BaseActivity {
         EventBus.getDefault().post(dbEvent);
     }
 
-    @Subscribe(threadMode = ThreadMode.MainThread)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void dbResult(DBResult result) {
         if (result.getClazz().getName().equals(People.class.getName())) {
             //数据库操作成功

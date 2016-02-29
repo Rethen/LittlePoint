@@ -4,9 +4,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.view.View;
 
-import com.socks.library.KLog;
 import com.then.littlepoint.listener.ViewListener;
-import com.then.littlepoint.manager.AndroidCompontManager;
 import com.then.littlepoint.model.ItemAction;
 
 
@@ -17,6 +15,7 @@ public  abstract class ModelAdapter extends  BaseObservable implements  ViewList
 
 
     protected int viewType;
+
 
     @Bindable
     protected ViewModelListner viewModelListner;
@@ -47,6 +46,17 @@ public  abstract class ModelAdapter extends  BaseObservable implements  ViewList
 
     public void setViewModelListner(ViewModelListner viewModelListner) {
         this.viewModelListner = viewModelListner;
+    }
+
+    @Override
+    public void onClick(View v) {
+        action(v, ItemAction.ONCLICK);
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        action(v, ItemAction.LONG_CLICK);
+        return true;
     }
 
 

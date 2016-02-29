@@ -1,8 +1,6 @@
 package com.then.littlepoint.model.item.data;
 
-import android.content.Intent;
 import android.databinding.Bindable;
-import android.view.View;
 
 
 import com.litesuits.orm.db.annotation.Ignore;
@@ -10,17 +8,7 @@ import com.litesuits.orm.db.annotation.PrimaryKey;
 import com.litesuits.orm.db.annotation.Table;
 import com.litesuits.orm.db.enums.AssignType;
 import com.then.littlepoint.BR;
-import com.then.littlepoint.R;
-import com.then.littlepoint.activity.TowActivity;
-import com.then.littlepoint.event.AndroidCompontEvent;
-import com.then.littlepoint.listener.ViewListener;
-import com.then.littlepoint.manager.AndroidCompontManager;
 import com.then.littlepoint.model.item.ModelAdapter;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import de.greenrobot.event.EventBus;
 
 
 /**
@@ -90,7 +78,7 @@ public class People extends ModelAdapter {
 
     public void setTitle(String title) {
         this.title = title;
-      notifyPropertyChanged(BR.title);
+        notifyPropertyChanged(BR.title);
     }
 
 

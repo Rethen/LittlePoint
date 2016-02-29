@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
