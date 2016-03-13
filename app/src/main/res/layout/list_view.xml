@@ -19,9 +19,10 @@
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:scrollListener="@{viewModel.onScrollListener}"
             app:itemView="@{viewModel.itemView}"
             app:items="@{viewModel.items}"
-            app:layoutManager="@{LayoutManagers.linear()}" />
+            app:layoutManager="@{viewModel.layoutManager}" />
 
     </RelativeLayout>
 </layout>

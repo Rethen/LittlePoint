@@ -7,8 +7,6 @@
         <variable
             name="item"
             type="com.then.littlepoint.model.item.view.ListViewModel" />
-
-        <import type="me.tatarka.bindingcollectionadapter.LayoutManagers" />
     </data>
 
     <RelativeLayout
@@ -27,10 +25,10 @@
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scrollListener="@{item.onScrollListener}"
                 app:itemView="@{item.itemView}"
                 app:items="@{item.items}"
-                app:layoutManager="@{LayoutManagers.linear()}" />
-
+                app:layoutManager="@{item.layoutManager}" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
