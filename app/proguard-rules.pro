@@ -39,8 +39,10 @@
 -dontwarn okio.**
 
 -dontwarn android.support.**
+-dontwarn android.support.v8.**
 -dontwarn org.dom4j.**
 -dontwarn com.daimajia.**
+-dontwarn com.wangjie.**
 -dontwarn jp.wasabeef.**
 -dontwarn rx.internal.**
 
@@ -84,3 +86,8 @@
 -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
+
+-keepclasseswithmembernames class * {
+native <methods>;
+}
+-keep class android.support.v8.renderscript.** { *; }
