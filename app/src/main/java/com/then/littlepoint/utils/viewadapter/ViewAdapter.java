@@ -5,6 +5,7 @@ import android.databinding.BindingMethod;
 import android.databinding.BindingMethods;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,7 +20,7 @@ import codetail.graphics.drawables.LollipopDrawablesCompat;
 public class ViewAdapter {
 
     public static class RelativeLayoutAdapter {
-        @BindingAdapter({"bind:rippleDrawbale"})
+        @BindingAdapter("rippleDrawbale")
         public static void bindRippleDrawale(View view, String id) {
             view.setBackground(LollipopDrawablesCompat.getDrawable(view.getResources(), R.drawable.list_selector));
         }
@@ -44,6 +45,10 @@ public class ViewAdapter {
     @BindingMethods({
             @BindingMethod(type = View.class, attribute = "android:onLongClick", method = "setOnLongClickListener")})
     public static class TextViewAdapter {
+
+    }
+    @BindingMethods({@BindingMethod(type = RecyclerView.class,attribute = "android:scrollListener",method = "addOnScrollListener")})
+    public  static  class  RecyclerViewAdapter{
 
     }
 

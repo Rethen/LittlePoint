@@ -45,12 +45,12 @@ public class HttpApiManager {
     }
 
     private Retrofit createNewRetrofit(Converter.Factory factory, HttpUrl httpUrl) {
-        OkHttpClient okHttpClient=new OkHttpClient.Builder().connectTimeout(60, TimeUnit.SECONDS).readTimeout(120, TimeUnit.SECONDS).build();
+        OkHttpClient okHttpClient=new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).readTimeout(120, TimeUnit.SECONDS).build();
         return new Retrofit.Builder()
                 .baseUrl(httpUrl)
                 .client(okHttpClient)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(factory)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
     }
 

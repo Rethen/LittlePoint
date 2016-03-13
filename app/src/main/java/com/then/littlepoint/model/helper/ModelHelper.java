@@ -12,6 +12,7 @@ public class ModelHelper {
     private String url;
 
 
+
     public int getCurrentPage() {
         return currentPage;
     }

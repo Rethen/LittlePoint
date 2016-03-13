@@ -1,7 +1,5 @@
 package com.then.littlepoint.api.http.ex;
 
-import android.os.Handler;
-import android.os.Looper;
 
 import com.then.littlepoint.event.UploadAndDownLoadEvent;
 

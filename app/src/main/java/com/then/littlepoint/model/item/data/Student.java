@@ -4,7 +4,6 @@ import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
 import com.then.littlepoint.model.item.ModelAdapter;
 import com.then.littlepoint.model.item.view.ListViewModel;
 
@@ -14,7 +13,6 @@ import com.then.littlepoint.model.item.view.ListViewModel;
 public class Student extends ModelAdapter implements Parcelable {
 
     @Bindable
-    @SerializedName("k_name")
     private  String name;
 
     @Bindable

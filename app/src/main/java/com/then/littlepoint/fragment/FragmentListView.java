@@ -7,7 +7,7 @@ import android.databinding.ObservableList;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,34 +21,35 @@ import com.then.littlepoint.api.http.HttpService;
 import com.then.littlepoint.api.http.ex.ProgressRequestBody;
 import com.then.littlepoint.databinding.ListViewBinding;
 import com.then.littlepoint.event.UploadAndDownLoadEvent;
+import com.then.littlepoint.listener.LoadAndRefreshListener;
 import com.then.littlepoint.manager.HttpApiManager;
 import com.then.littlepoint.model.ItemAction;
+import com.then.littlepoint.model.helper.ModelHelper;
 import com.then.littlepoint.model.item.ModelAdapter;
 import com.then.littlepoint.model.item.data.People;
 import com.then.littlepoint.model.item.data.Student;
-import com.then.littlepoint.model.item.data.User;
 import com.then.littlepoint.model.item.view.ListViewModel;
-
-
-import java.io.File;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.File;
+
 import me.tatarka.bindingcollectionadapter.ItemView;
 import me.tatarka.bindingcollectionadapter.ItemViewSelector;
+import me.tatarka.bindingcollectionadapter.LayoutManagers;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
 /**
  * Created by evan on 5/31/15.
  */
-public class FragmentListView extends BaseFragment {
+public class FragmentListView extends BaseFragment implements LoadAndRefreshListener {
 
     private static final String TAG = "BindingList";
     private ListViewModel viewModel;
@@ -75,7 +76,7 @@ public class FragmentListView extends BaseFragment {
 //            stuListItems.add(new People("你好" + i, "http://www.baidu.com/img/bd_logo1.png", 1, this));
 //        }
 
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 50; i++) {
             if (i % 2 == 0) {
                 People p = new People("你好" + i, "http://avatar.csdn.net/5/B/B/1_lizzy115.jpg", 1, this);
                 if (i == 2) {
@@ -109,27 +110,31 @@ public class FragmentListView extends BaseFragment {
             }
         };
 
+
         viewModel = new ListViewModel(items, selector);
-        rx.Observable<Student> callLogin = HttpApiManager.getInstance().getService(HttpService.class).login();
-        callLogin.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Student>() {
-                               @Override
-                               public void onCompleted() {
 
-                               }
 
-                               @Override
-                               public void onError(Throwable e) {
+        viewModel.setLayoutManager((LinearLayoutManager) LayoutManagers.linear().create(getContext()));
+        viewModel.setLoadAndRefreshListener(this);
 
-                               }
 
-                               @Override
-                               public void onNext(Student student) {
-
-                               }
-                           }
-                );
+//        rx.Observable<Student> callLogin = HttpApiManager.getInstance().getService(HttpService.class).login();
+//        callLogin.subscribeOn(Schedulers.newThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<Student>() {
+//                               @Override
+//                               public void onCompleted() {
+//                               }
+//
+//                               @Override
+//                               public void onError(Throwable e) {
+//                               }
+//
+//                               @Override
+//                               public void onNext(Student student) {
+//                               }
+//                           }
+//                );
 
 
         File file = new File("/sdcard/1.apk");
@@ -208,8 +213,7 @@ public class FragmentListView extends BaseFragment {
                 if (actionType == ItemAction.ONCLICK) {
                     Intent intent = new Intent(getActivity(), TowActivity.class);
                     startActivity(intent);
-                }
-                else if (actionType == ItemAction.LONG_CLICK) {
+                } else if (actionType == ItemAction.LONG_CLICK) {
                     ((People) modelAdapter).setTitle("Longclick");
                 }
                 break;
@@ -259,5 +263,13 @@ public class FragmentListView extends BaseFragment {
         super.onDestroy();
     }
 
+    @Override
+    public void load(ModelHelper modelHelper) {
 
+    }
+
+    @Override
+    public void refresh(ModelHelper modelHelper) {
+
+    }
 }

@@ -82,20 +82,4 @@ public class People extends ModelAdapter {
     }
 
 
-//    @Override
-//    public void action(View view) {
-//        int viewId=view.getId();
-//        switch (viewId){
-//            case R.id.title:
-//                setTitle("11111");
-//                break;
-//            case R.id.item_root:
-//                Student student=new Student("then",18);
-//                Intent intent= AndroidCompontManager.getInstance().newIntent(TowActivity.class);
-//                intent.putExtra("stu",student);
-//                AndroidCompontEvent compontEvent=new AndroidCompontEvent(AndroidCompontEvent.TYPE_ACTIVITY,intent);
-//                EventBus.getDefault().post(compontEvent);
-//                break;
-//        }
-//    }
 }

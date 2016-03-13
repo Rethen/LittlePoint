@@ -2,9 +2,10 @@ package com.then.littlepoint.model.item.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.then.littlepoint.model.item.ModelAdapter;
 
 
-public class User {
+public class User extends ModelAdapter{
 
     @Expose
     private String login;

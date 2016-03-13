@@ -4,46 +4,91 @@ import android.databinding.Bindable;
 import android.databinding.Observable;
 import android.databinding.ObservableList;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
-import com.socks.library.KLog;
 import com.then.littlepoint.BR;
+import com.then.littlepoint.listener.InfiniteScrollListener;
+import com.then.littlepoint.listener.LoadAndRefreshListener;
+import com.then.littlepoint.model.helper.ModelHelper;
 import com.then.littlepoint.model.item.ModelAdapter;
-import com.then.littlepoint.model.item.data.People;
-import com.then.littlepoint.model.item.data.Student;
 
 import me.tatarka.bindingcollectionadapter.BindingListViewAdapter;
 import me.tatarka.bindingcollectionadapter.ItemView;
 import me.tatarka.bindingcollectionadapter.ItemViewArg;
 import me.tatarka.bindingcollectionadapter.ItemViewSelector;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import rx.Observer;
 
 /**
  * Created by evan on 5/31/15.
  */
-public class ListViewModel extends ModelAdapter implements SwipeRefreshLayout.OnRefreshListener {
+public class ListViewModel extends ModelAdapter implements SwipeRefreshLayout.OnRefreshListener,InfiniteScrollListener.ScrolledEndListener, Observer<ModelAdapter> {
 
 
+    /**
+     * 列表数据
+     */
     @Bindable
     private ObservableList<Observable> items;
 
+    /**
+     * 列表子项布局
+     */
     @Bindable
     private ItemViewArg itemView;
 
+    /**
+     * 是否正在刷新
+     */
     @Bindable
     private boolean refreshing;
 
+
+    /**
+     * 是否正在加载
+     */
+    @Bindable boolean loading;
+
+
+    /**
+     * RecyclerView的布局管理器
+     */
+    @Bindable
+    private LinearLayoutManager layoutManager;
+
+    /**
+     * 上拉监听
+     */
+    @Bindable
+    private InfiniteScrollListener onScrollListener;
+
+    private ModelHelper modelHelper;
+
+    private LoadAndRefreshListener loadAndRefreshListener;
 
     public ListViewModel(ObservableList<Observable> items, int layoutId) {
         itemView = ItemViewArg.of(ItemView.of(BR.item, layoutId));
         this.items = items;
     }
 
+    public ListViewModel(ObservableList<Observable> items, int layoutId,LinearLayoutManager layoutManager) {
+        itemView = ItemViewArg.of(ItemView.of(BR.item, layoutId));
+        this.items = items;
+        this.layoutManager=layoutManager;
+        onScrollListener=new InfiniteScrollListener(5,layoutManager,this);
+    }
+
 
     public ListViewModel(ObservableList<Observable> items, ItemViewSelector selector) {
         itemView = ItemViewArg.of(selector);
         this.items = items;
+    }
+
+    public ListViewModel(ObservableList<Observable> items, ItemViewSelector selector,LinearLayoutManager layoutManager) {
+        itemView = ItemViewArg.of(selector);
+        this.items = items;
+        this.layoutManager=layoutManager;
+        onScrollListener=new InfiniteScrollListener(5,layoutManager,this);
     }
 
 
@@ -75,45 +120,82 @@ public class ListViewModel extends ModelAdapter implements SwipeRefreshLayout.On
             return position;
         }
     };
+
+
+
+    public void setModelHelper(ModelHelper modelHelper) {
+        this.modelHelper = modelHelper;
+    }
+
+
+    public ModelHelper getModelHelper() {
+        return modelHelper;
+    }
+
+
+
+    public RecyclerView.OnScrollListener getOnScrollListener() {
+        return onScrollListener;
+    }
+
+
+
+
+    public void setLoadAndRefreshListener(LoadAndRefreshListener loadAndRefreshListener) {
+        this.loadAndRefreshListener = loadAndRefreshListener;
+    }
+
+
+    public void setLayoutManager(LinearLayoutManager layoutManager) {
+        this.layoutManager = layoutManager;
+        onScrollListener=new InfiniteScrollListener(5,layoutManager,this);
+    }
+
+
+    public RecyclerView.LayoutManager getLayoutManager() {
+        return layoutManager;
+    }
+
     @Override
     public void onRefresh() {
-        rx.Observable.create(new rx.Observable.OnSubscribe<Observable>() {
-            @Override
-            public void call(Subscriber<? super Observable> subscriber) {
-                try {
-                    for (int i = 0; i < 5; i++) {
-                        Thread.sleep(1000);
-                        subscriber.onNext(new Student("hello" + i, 20));
-                    }
-                    subscriber.onCompleted();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                new Subscriber<Observable>() {
-                    @Override
-                    public void onCompleted() {
-                        setRefreshing(false);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Observable observable) {
-                        items.add(observable);
-                    }
-                });
-
+        loadAndRefreshListener.refresh(modelHelper);
     }
 
 
-    public interface LoadAndRefreshListener {
-        void load();
-
-        void refresh();
+    @Override
+    public void onScrolledToEnd(int firstVisibleItemPosition) {
+        changeLoadStatus(true);
+        loadAndRefreshListener.load(modelHelper);
     }
+
+
+
+    @Override
+    public void onError(Throwable e) {
+        onScrollListener.setLoading(false);
+        changeLoadStatus(false);
+        setRefreshing(false);
+    }
+
+    @Override
+    public void onCompleted() {
+        onScrollListener.setLoading(false);
+        changeLoadStatus(false);
+        setRefreshing(false);
+    }
+
+    @Override
+    public void onNext(ModelAdapter o) {
+        items.add(o);
+    }
+
+   private  void changeLoadStatus(boolean loading){
+       if(items.get(items.size()-1) instanceof LoadViewModel ){
+           LoadViewModel loadViewModel= (LoadViewModel) items.get(items.size()-1);
+           loadViewModel.setLoading(loading);
+       }
+   }
+
+
+
 }
